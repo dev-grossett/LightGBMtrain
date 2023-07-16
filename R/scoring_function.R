@@ -32,6 +32,7 @@ scoring_function <- function(training_data,
                              nfolds = 3L,
                              early_stopping_rounds = 100L) {
 
+  # Generate parameter list for LightGBM
   pars <- list(num_leaves = num_leaves,
                min_data_in_leaf = min_data_in_leaf,
                num_trees = num_trees,
@@ -42,6 +43,7 @@ scoring_function <- function(training_data,
                objective = objective,
                deterministic = TRUE) #attempting to make reproducible
 
+  # Train using cross validation
   lgb_cv <- lightgbm::lgb.cv(params = pars,
                             data = training_data,
                             nfold = nfolds,
@@ -50,6 +52,7 @@ scoring_function <- function(training_data,
                             # num_trees
                         early_stopping_rounds = early_stopping_rounds)
 
+  # Return results
   return(list(Score = lgb_cv$best_score,
               Trees = lgb_cv$best_iter))
 }

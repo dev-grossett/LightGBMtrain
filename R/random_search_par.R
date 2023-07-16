@@ -12,9 +12,14 @@
 random_search_par <- function(bounds, niter, training_data,
                               n_cores = NULL) {
 
+  i <- NULL
+
   #set up datatable of random hyperparameters within bounds specified
   df_vars <- data.frame(id = seq(1, niter, 1))
 
+  # For each hyperparameter, generate random point withing bounds using runif
+  # for continuous params, or rdunif for discrete params. If bounds for that
+  # parameter is of length 1, return the value instead.
   df_vars <- df_vars %>%
     dplyr::mutate(
       num_leaves =
